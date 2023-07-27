@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/css/auth.css">
+    <script src="/static/js/auth.js" defer></script>
+</head>
+<body>
+<!-- Container!  -->
+<article class="container">
+    <!-- Block -->
+    <div class="block">
+
+        <section class="block__item block-item">
+            <h2 class="block-item__title">You have account?</h2>
+            <button class="block-item__btn signin-btn">Log in</button>
+        </section>
+        <section class="block__item block-item">
+            <h2 class="block-item__title">You not have account?</h2>
+            <button class="block-item__btn signup-btn">Registation</button>
+        </section>
+    </div>
+
+    <!-- Block form -->
+    <div class="form-box">
+
+        <!-- Form login -->
+        <form th:action="@{/login}" method="post" class="form form_signin">
+            <h3 class="form__title">Log in</h3>
+
+            <p>
+                <input type="text" th:name="username" class="form__input" placeholder="Username">
+            </p>
+            <p>
+                <input type="text" th:name="password" class="form__input" placeholder="Password">
+            </p>
+            <p>
+                <button type="submit" class="form__btn">Login</button>
+            </p>
+            <p>
+                <a href="#" class="form__forgot">Reset password</a>
+            </p>
+        </form>
+
+        <!-- Form registration -->
+        <form action="/register" method="post" class="form form_signup">
+            <h3 class="form__title">Registration</h3>
+
+            <p>
+                <input type="text" th:field="${users.username}" class="form__input" placeholder="Username">
+            </p>
+            <p>
+                <input type="email" th:field="${users.email}" class="form__input" placeholder="Email">
+            </p>
+            <p>
+                <input type="password" th:field="${users.password}" class="form__input" placeholder="Password">
+            </p>
+            <p>
+                <button type="submit" class="form__btn form__btn_signup">Registration</button>
+            </p>
+        </form>
+
+    </div>
+
+</article>
+
+</body>
+</html>
