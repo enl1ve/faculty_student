@@ -10,15 +10,15 @@ import ua.faculty.faculty_student.Repository.UsersRepository;
 @Service
 public class UsersDetailsService implements UserDetailsService {
 
-    private final UsersRepository usersRepository;
+  private final UsersRepository usersRepository;
 
-    @Autowired
-    public UsersDetailsService(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
-    }
+  @Autowired
+  public UsersDetailsService(UsersRepository usersRepository) {
+    this.usersRepository = usersRepository;
+  }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usersRepository.findByUsername(username);
-    }
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return usersRepository.findByUsername(username);
+  }
 }

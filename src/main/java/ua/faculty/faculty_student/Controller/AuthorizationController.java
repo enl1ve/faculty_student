@@ -13,35 +13,34 @@ import ua.faculty.faculty_student.Service.UsersService;
 @Controller
 public class AuthorizationController {
 
-    private final UsersService usersService;
+  private final UsersService usersService;
 
-    @Autowired
-    public AuthorizationController(UsersService usersService) {
-        this.usersService = usersService;
+  @Autowired
+  public AuthorizationController(UsersService usersService) {
+    this.usersService = usersService;
+  }
+
+  @GetMapping("/login")
+  public String getPageLogin(Model model) {
+    model.addAttribute("users", new Users());
+    return "authorization/auth";
+  }
+
+
+  @PostMapping("/register")
+  public String registerUser(@Valid Users users,
+      BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      return "authorization/auth";
     }
 
-    @GetMapping("/login")
-    public String getPageLogin(Model model) {
-        model.addAttribute("users", new Users());
-        return "authorization/auth";
+    /* Проверка пользователя в системе */
+    if (usersService.getLogicByUser(users.getUsername())) {
+      return "/authorization/auth";
     }
 
+    usersService.saveUserToDB(users);
 
-    @PostMapping("/register")
-    public String registerUser(@Valid Users users,
-                               BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            return "authorization/auth";
-        }
-
-        /* Проверка пользователя в системе */
-        if(usersService.getLogicByUser(users.getUsername())){
-            return "/authorization/auth";
-        }
-
-        usersService.saveUserToDB(users);
-
-
-        return "redirect:/login";
-    }
+    return "redirect:/login";
+  }
 }

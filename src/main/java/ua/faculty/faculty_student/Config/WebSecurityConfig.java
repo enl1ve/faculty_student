@@ -13,46 +13,47 @@ import ua.faculty.faculty_student.Service.UsersDetailsService;
 
 @EnableWebSecurity
 @Configuration
-public class WebSecurityConfig{
-    private final UsersDetailsService usersService;
+public class WebSecurityConfig {
 
-    @Autowired
-    public WebSecurityConfig(UsersDetailsService usersService) {
-        this.usersService = usersService;
-    }
+  private final UsersDetailsService usersService;
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder(12);
-    }
+  @Autowired
+  public WebSecurityConfig(UsersDetailsService usersService) {
+    this.usersService = usersService;
+  }
 
-    @Bean
-    public SecurityFilterChain spiFilterChain(HttpSecurity http) throws Exception{
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder(12);
+  }
 
-        http.authenticationManager(
-                http.getSharedObject(AuthenticationManagerBuilder.class)
-                        .userDetailsService(usersService)
-                        .passwordEncoder(passwordEncoder())
-                        .and()
-                        .build());
+  @Bean
+  public SecurityFilterChain spiFilterChain(HttpSecurity http) throws Exception {
 
-        http
-                .csrf()
-                .disable()
-                .authorizeRequests()
-                .requestMatchers("/", "/register", "/login").permitAll()
-                .requestMatchers("/static/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin((form) -> form
-                        .permitAll()
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/")
-                )
-                .logout((logout)->logout
-                        .permitAll()
-                        .logoutSuccessUrl("/"));
+    http.authenticationManager(
+        http.getSharedObject(AuthenticationManagerBuilder.class)
+            .userDetailsService(usersService)
+            .passwordEncoder(passwordEncoder())
+            .and()
+            .build());
 
-        return http.build();
-    }
+    http
+        .csrf()
+        .disable()
+        .authorizeRequests()
+        .requestMatchers("/", "/register", "/login").permitAll()
+        .requestMatchers("/static/**").permitAll()
+        .anyRequest().authenticated()
+        .and()
+        .formLogin((form) -> form
+            .permitAll()
+            .loginPage("/login")
+            .defaultSuccessUrl("/")
+        )
+        .logout((logout) -> logout
+            .permitAll()
+            .logoutSuccessUrl("/"));
+
+    return http.build();
+  }
 }

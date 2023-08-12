@@ -9,21 +9,21 @@ import ua.faculty.faculty_student.Repository.UsersRepository;
 @Service
 public class UsersService {
 
-    private final UsersRepository usersRepository;
+  private final UsersRepository usersRepository;
 
-    @Autowired
-    public UsersService(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
-    }
+  @Autowired
+  public UsersService(UsersRepository usersRepository) {
+    this.usersRepository = usersRepository;
+  }
 
-    public boolean getLogicByUser(String username) {
-        return !usersRepository.findAllByUsername(username).isEmpty();
-    }
+  public boolean getLogicByUser(String username) {
+    return !usersRepository.findAllByUsername(username).isEmpty();
+  }
 
-    //Save new user to DB and encrypt pass
-    public Users saveUserToDB(Users users) {
-        users.setPassword(new BCryptPasswordEncoder().encode(users.getPassword()));
+  //Save new user to DB and encrypt pass
+  public Users saveUserToDB(Users users) {
+    users.setPassword(new BCryptPasswordEncoder().encode(users.getPassword()));
 
-        return usersRepository.save(users);
-    }
+    return usersRepository.save(users);
+  }
 }
