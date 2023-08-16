@@ -1,68 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="/static/css/auth.css">
-    <script src="/static/js/auth.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Montserrat:wght@100;600&display=swap"
+      rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/auth.css">
+  <script src="/static/js/auth.js" defer></script>
 </head>
 <body>
 <!-- Container!  -->
 <article class="container">
-    <!-- Block -->
-    <div class="block">
+  <!-- Block -->
+  <div class="block">
 
-        <section class="block__item block-item">
-            <h2 class="block-item__title">You have account?</h2>
-            <button class="block-item__btn signin-btn">Log in</button>
-        </section>
-        <section class="block__item block-item">
-            <h2 class="block-item__title">You not have account?</h2>
-            <button class="block-item__btn signup-btn">Registation</button>
-        </section>
-    </div>
+    <section class="block__item block-item">
+      <h2 class="block-item__title">Welcome Back!</h2>
+      <p class="block-item__text">To keep connected with us, please </br>
+        login with your personal info</p>
+      <button class="block-item__btn signin-btn">Sign in</button>
+    </section>
+    <section class="block__item block-item">
+      <h2 class="block-item__title">Hello friend!</h2>
+      <p class="block-item__text">Enter your personal details and </br>
+        start your journey with us</p>
+      <button class="block-item__btn signup-btn">Sign up</button>
+    </section>
+  </div>
 
-    <!-- Block form -->
-    <div class="form-box">
+  <!-- Block form -->
+  <div class="form-box">
 
-        <!-- Form login -->
-        <form th:action="@{/login}" method="post" class="form form_signin">
-            <h3 class="form__title">Log in</h3>
+    <!-- Form login -->
+    <form th:action="@{/login}" method="post" class="form form_signin">
+      <h3 class="form__title">Sign in to your account</h3>
 
-            <p>
-                <input type="text" th:name="username" class="form__input" placeholder="Username">
-            </p>
-            <p>
-                <input type="text" th:name="password" class="form__input" placeholder="Password">
-            </p>
-            <p>
-                <button type="submit" class="form__btn">Login</button>
-            </p>
-            <p>
-                <a href="#" class="form__forgot">Reset password</a>
-            </p>
-        </form>
+      <p class="input-container">
+        <img src="/static/img/login/user.svg" id="icon_user_login">
+        <input type="text" id="username_for_login" th:name="username" class="form__input"
+               oninput="toggleIconForUsernameLogin()"
+               placeholder="Email">
+      </p>
+      <p class="input-container">
+        <img src="/static/img/login/lock.svg" id="icon_pass_login">
+        <input type="password" th:name="password" id="password_for_login"
+               placeholder="Password"
+               oninput="toggleIconForPassLogin()"
+               class="form__input">
+      </p>
 
-        <!-- Form registration -->
-        <form action="/register" method="post" class="form form_signup">
-            <h3 class="form__title">Registration</h3>
+      <p>
+        <a href="/forgot" class="form__forgot">Forgot password?</a>
+      </p>
+      <p>
+        <button type="submit" class="form__btn">Sign in</button>
+      </p>
+    </form>
 
-            <p>
-                <input type="text" th:field="${users.username}" class="form__input" placeholder="Username">
-            </p>
-            <p>
-                <input type="email" th:field="${users.email}" class="form__input" placeholder="Email">
-            </p>
-            <p>
-                <input type="password" th:field="${users.password}" class="form__input" placeholder="Password">
-            </p>
-            <p>
-                <button type="submit" class="form__btn form__btn_signup">Registration</button>
-            </p>
-        </form>
+    <!-- Form registration -->
+    <form action="/register" method="post" class="form form_signup">
+      <h3 class="form__title">Create account</h3>
 
-    </div>
+      <p class="input-container">
+        <img src="/static/img/login/user.svg" id="icon_user_reg">
+        <input type="text" id="username_for_reg" th:field="${users.username}"
+               class="form__input"
+               placeholder="Name"
+               oninput="toggleIconForUsernameReg()">
+      </p>
+      <p class="input-container">
+        <img src="/static/img/login/mail.svg" id="icon_email">
+        <input type="email" id="email" th:field="${users.email}" class="form__input"
+               placeholder="Email" oninput="toggleIconForEmail()">
+      </p>
+      <p class="input-container">
+        <img src="/static/img/login/lock.svg" id="icon_pass_reg">
+        <input type="password" id="password_for_reg" th:field="${users.password}"
+               class="form__input" placeholder="Password" oninput="toggleIconForPassReg()">
+      </p>
+      <p>
+        <button type="submit" class="form__btn form__btn_signup">Sign up</button>
+      </p>
+    </form>
+
+  </div>
 
 </article>
 

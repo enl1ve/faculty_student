@@ -1,11 +1,11 @@
-@import url('https://fonts.google.com/css?familly=Poppins:400,500&display=swap');
-
 * {
     box-sizing: border-box;
 }
 
 body {
-    font-family: 'Poppins';
+    /* font-family: 'Inter', sans-serif; */
+    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     margin: 0;
 
     min-height: 100vh;
@@ -13,25 +13,24 @@ body {
     justify-content: center;
     align-items: center;
 
-    background-color: #03a9f4;
+    background-color: #f0f4f3;
     transition: 0.5s;
 }
 
-body.active {
+/* body.active {
     background-color: #f43648;
-}
+} */
 /* Контейнер */
 .container {
     width: 800px;
     height: 500px;
-    padding: 40px 0;
 
     position: relative;
 }
 /* Внутрений блок */
 .block {
     height: 100%;
-    background-color: rgba(255, 225, 225, 0.2);
+    background-color: #35a29f;
     box-shadow: 0 5px 45px rgba(0, 0, 0, 0.2);
 
     display: flex;
@@ -45,12 +44,20 @@ body.active {
 /* Элементы блока */
 .block-item {
     text-align: center;
+    margin-bottom: 60px;
 }
 
 .block-item__title {
-    font-size: 1.2rem;
-    font-weight: 500;
+    font-size: 2.5rem;
+    font-weight: bold;
     color: #fff;
+    margin-bottom: 35px;
+}
+
+.block-item__text {
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 250;
     margin-bottom: 10px;
 }
 
@@ -62,6 +69,8 @@ body.active {
     color: #333;
     font-size: 16px;
     font-weight: 500;
+    margin-top: 30px;
+    border-radius: 20px;
 }
 
 /* Блок формы */
@@ -82,6 +91,7 @@ body.active {
     align-items: center;
 
     overflow: hidden;
+    text-align: center;
 }
 
 .form-box.active {
@@ -121,14 +131,16 @@ body.active {
 
 .form__title {
     font-size: 1.5rem;
-    font-weight: 500;
-    color: #333;
+    font-weight: bold;
+    color: #35a29f;
+    margin-bottom: 80px;
 }
 
 .form__input {
+    background-color: #f0f4f3;
     width: 100%;
     padding: 10px;
-    border: solid 1px;
+    border: 2px solid #fff;
     font-size: inherit;
 }
 
@@ -136,16 +148,18 @@ body.active {
     border: none;
     cursor: pointer;
     font-size: inherit;
-    background-color: #03a9f4;
+    background-color: #35a29f;
     color: #fff;
     padding: 10px 50px;
+    border-radius: 20px;
 }
 
 .form__btn_signup {
-    background-color: #f43648;
+    background-color: #35a29f;
 }
 
 .form__forgot {
+    font-weight: bold;
     color: #333;
 }
 
@@ -184,3 +198,20 @@ body.active {
         left: 0;
     }
 }
+.input-container {
+    position: relative; /* Чтобы управлять позицией картинки относительно поля ввода */
+}
+
+img {
+    width: 20px; /* Укажите нужную ширину картинки */
+    height: 20px; /* Укажите нужную высоту картинки */
+    position: absolute;
+    top: 50%; /* Положение картинки относительно вертикали */
+    transform: translateY(-50%); /* Чтобы выровнять картинку вертикально по центру */
+    left: 10px; /* Положение картинки относительно левого края */
+}
+
+input::placeholder {
+    text-indent: 25px;
+}
+  
