@@ -26,7 +26,6 @@ public class UsersService {
   public UsersService(UsersRepository usersRepository, AmazonS3 s3Client) {
     this.usersRepository = usersRepository;
     this.s3Client = s3Client;
-  }
 
   public boolean getLogicByUser(String username) {
     return !usersRepository.findAllByUsername(username).isEmpty();
