@@ -5,14 +5,20 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AmazonS3Config {
-  private final String awsAccessKey = "AKIAZWTJALMGSCGYXREI";
-  private final String awsSecretKey = "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";
-  private final String region = "eu-north-1";
+  @Value("${aws.accessKeyId}")
+  private String awsAccessKey;
+
+  @Value("${aws.secretKey}")
+  private String awsSecretKey;
+
+  @Value("${aws.region}")
+  private String region;
 
   @Bean
   public AmazonS3 amazonS3Client() {

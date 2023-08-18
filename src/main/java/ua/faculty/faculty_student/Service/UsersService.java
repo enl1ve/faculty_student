@@ -19,7 +19,7 @@ import ua.faculty.faculty_student.Repository.UsersRepository;
 public class UsersService {
 
   private final UsersRepository usersRepository;
-  private String bucketName = "faculty-student-project-demo";
+  private String bucketName = "faculty-student-bucket";
   private final AmazonS3 s3Client;
 
   @Autowired
@@ -50,6 +50,7 @@ public class UsersService {
 
   public void updatePhotoUser(Long id, MultipartFile file) {
     Users user = usersRepository.findById(id).orElse(null);
+    s3Client.deleteObject(bucketName, user != null ? user.getAvatar() : null);
 
     File convertedFile = convertMultipartToFile(file);
     String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
