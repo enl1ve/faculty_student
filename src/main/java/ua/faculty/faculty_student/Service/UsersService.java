@@ -1,10 +1,9 @@
 package ua.faculty.faculty_student.Service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.amazonaws.util.IOUtils;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,15 +16,15 @@ import ua.faculty.faculty_student.Repository.UsersRepository;
 
 @Service
 public class UsersService {
+  private final Storage gcsStorage;
 
   private final UsersRepository usersRepository;
-  private String bucketName = "faculty-student-bucket";
-  private final AmazonS3 s3Client;
+  private String bucketName = "faculty-student-project";
 
   @Autowired
-  public UsersService(UsersRepository usersRepository, AmazonS3 s3Client) {
+  public UsersService(Storage gcsStorage, UsersRepository usersRepository) {
+    this.gcsStorage = gcsStorage;
     this.usersRepository = usersRepository;
-    this.s3Client = s3Client;
   }
 
   public boolean getLogicByUser(String username) {
@@ -50,21 +49,31 @@ public class UsersService {
 
   public void updatePhotoUser(Long id, MultipartFile file) {
     Users user = usersRepository.findById(id).orElse(null);
-    s3Client.deleteObject(bucketName, user != null ? user.getAvatar() : null);
 
-    File convertedFile = convertMultipartToFile(file);
-    String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-    s3Client.putObject(new PutObjectRequest(bucketName, fileName, convertedFile));
+    if (user != null) {
+      String currentAvatar = user.getAvatar();
+      if (currentAvatar != null) {
+        // Удалите текущий аватар из GCS (необязательно)
+        String currentObject = currentAvatar.substring(currentAvatar.lastIndexOf('/') + 1);
+        gcsStorage.delete(bucketName, currentObject);
+      }
 
-    String avatarUrl = "https://" + bucketName + ".s3.amazonaws.com/" + fileName;
-    user.setAvatar(avatarUrl);
-    usersRepository.save(user);
+      String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+      BlobId blobId = BlobId.of(bucketName, fileName);
+      BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+
+      try {
+        byte[] fileBytes = file.getBytes();
+        gcsStorage.create(blobInfo, fileBytes);
+
+        String avatarUrl = "https://storage.googleapis.com/" + bucketName + "/" + fileName;
+        user.setAvatar(avatarUrl);
+        usersRepository.save(user);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
   }
-
-//  public String deleteFile(String fileName) {
-//    s3Client.deleteObject(bucketName, fileName);
-//    return fileName + "removed";
-//  }
 
   private File convertMultipartToFile(MultipartFile file) {
     File convertedFile = new File(file.getOriginalFilename());
